@@ -3,4 +3,4 @@
 __pycache__/
 pynecone.db
 reflex.db
-.yaml
+config.yaml
