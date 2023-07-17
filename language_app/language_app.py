@@ -24,6 +24,7 @@ class State(rx.State):
     """The app state."""
 
     text: str = ""
+    text_opt: str = ""
     response: str = ""
     politeness: list = [
         "Super Casual",
@@ -33,8 +34,6 @@ class State(rx.State):
         "Super Polite",
     ]
     polite_level: str = "Workplace Casual"
-    profeciency: list = ["Newbie", "Beginner", "Conversational", "Business", "Native"]
-    profeciency_level: str = "Beginner"
     prompt: str = ""
     lang_list: list = ["English", "Japanese"]
     input_lang: str = "English"
@@ -48,7 +47,8 @@ class State(rx.State):
         yield
 
         if len(self.text) == 0:
-            self.response = "Please provide a sentence to translate!"
+            self.out_processing = False
+            yield rx.window_alert("Please input some text to translate.")
         else:
             try:
                 self.response = self.get_openai_response()
@@ -64,25 +64,31 @@ class State(rx.State):
         response = openai.ChatCompletion.create(
             model=model, messages=[{"role": "user", "content": self.prompt}]
         )
-        return response["choices"][0]["message"]["content"]
+        return response["choices"][0]["message"]["content"].replace('\n', '<br/>')
 
     def _construct_prompt(self):
         if self.output_lang == "Japanese":
             self.prompt = f"You are a helpful Japanese Translator. Please Translate the sentence '{self.text}' from the {self.input_lang} to {self.polite_level} Japanese and provide \
-                            me with the word definitions of all the Japanese words used which are {self.profeciency_level} level and above. The output should \
-                            be in the following format:\
-                            Translated Sentence in {self.polite_level} Japanese: <Translated Sentence in Kanji>\
-                            Translated Sentence In Romanji: <Translated sentnece in Romanji\
-                            {self.input_lang} definitions for Japanse words used which are {self.profeciency_level} level and above:\
-                            <provide prodefinitions seperated by '|' in the format: Japanese Word in Kanji (Written in Romanji): {self.input_lang} Definition.>"
+                            me with the word definitions of all the Japanese words used which are N4 proficiency level and above. The output should \
+                            very stricly be in the following format:\
+                            'Translated Sentence in {self.polite_level} Japanese: <Translated Sentence in Kanji>\
+                            Translated Sentence In Romanji: <Translated sentnece in Romanji'\
+                            Give the {self.input_lang} definitions for hard Japanese words used and the output should \
+                            very stricly be in the following format:\
+                            'The {self.input_lang} definitions for hard Japanese words used:\
+                            Japanese Word in Kanji (Written in Romanji): {self.input_lang} Definition.'\
+                            {self.text_opt}."
 
         elif self.output_lang == "English":
             self.prompt = f"You are a helpful English Translator. Please Translate the sentence '{self.text}' from the {self.input_lang} to {self.polite_level} English and provide \
-                            me with the word definitions of all the English words used which are {self.profeciency_level} level and above. The output should \
-                            be in the following format:\
-                            Translated Sentence in {self.polite_level} English: <Translated Sentence in English>\
-                            {self.input_lang} definitions for English words used which are {self.profeciency_level} level and above:\
-                            <provide prodefinitions seperated by '|' in the format: English Word: {self.input_lang} Definition.>"
+                            me with the word definitions of all the hard English words used. The output should \
+                            very strictly be in the following format:\
+                            'Translated Sentence in {self.polite_level} English: <Translated Sentence in English>'\
+                            Give the {self.input_lang} definitions for hard English words used and the output should \
+                            very stricly be in the following format:\
+                            '{self.input_lang} definitions for all the hard English words used:\
+                            English Word: {self.input_lang} Definition.'\
+                            {self.text_opt}."
 
 
 # ----------------------------------------------------------------------------
@@ -102,29 +108,24 @@ def header():
             padding="0.2em",
         ),
         rx.text(
-            "This is more than a Japanese-English Language Translator, Select you level of \
-                     profeciency and language level and watch the magic happen!",
-            color="White",
+            "This is more than a Japanese-English Language Translator, Select you desired level of translation\
+                     profeciency and watch the magic happen!",
+            color = "#A9A9A9",
+            width="50em",
+            text_align="center"
         ),
     )
 
 
-def input_text():
+def input_text(text="Text to translate", param=State.set_text):
     return rx.input(
-        placeholder="Text to translate",
-        on_blur=State.set_text,
+        placeholder=text,
+        on_blur=param,
         border_color="#eaeaef",
         position="relative",
+        width = "60em",
+        box_shadow="rgba(169, 169, 169, 0.8) 0 10px 10px -10px",
     )
-
-
-def select_profeciency():
-    return rx.select(
-        State.profeciency,
-        placeholder="Select " + State.output_lang + " Profeciency",
-        on_change=State.set_profeciency_level,
-    )
-
 
 def select_politeness():
     return rx.select(
@@ -172,29 +173,39 @@ def kofi_popover():
                 border_radius="8em",
                 box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
                 background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
-                width="20%",
+                width="10em",
                 _hover={
                     "opacity": 0.85,
                 },
+                position="fixed",
+                left="1em",
+                bottom="1em"
             )
         ),
         rx.popover_content(
-            rx.html(
-                "<iframe id='kofiframe' src='https://ko-fi.com/kai_3575/?hidefeed=true&widget=true&embed=true&preview=true' \
-                            style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='712' title='kai_3575'></iframe>"
-            ),
             rx.popover_close_button(),
+            rx.html(
+                    """
+                    <div style='position: relative; border-radius: 10px; overflow: hidden;left: 1em;'>
+                        <iframe id='kofiframe' src='https://ko-fi.com/kai_3575/?hidefeed=true&widget=true&embed=true&preview=true' \
+                            style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='712' title='kai_3575'></iframe>
+                    </div>
+                    """
+                ),
         ),
     )
 
 
 def output():
     return rx.box(
-        rx.text(State.response),
+        rx.html(State.response),
         border="1px solid #eaeaef",
         margin_top="1rem",
         border_radius="8px",
+        padding="1em",
+        width = "60em",
         position="relative",
+        box_shadow="rgba(169, 169, 169, 0.8) 0 10px 10px -10px",
     )
 
 
@@ -214,11 +225,11 @@ def index() -> rx.component():
                     select_output_lang(),
                 ),
                 rx.hstack(
-                    select_profeciency(),
                     select_politeness(),
                 ),
             ),
             input_text(),
+            input_text(text="Optional instructions.", param=State.set_text_opt),
             submit_button(),
             rx.cond(
                 State.out_processing,
@@ -238,6 +249,9 @@ def index() -> rx.component():
             rx.button(
                 rx.icon(tag="moon"),
                 on_click=rx.toggle_color_mode,
+                position="fixed",
+                right="1em",
+                bottom="1em"
             ),
             border_radius="lg",
             spacing="1em",
