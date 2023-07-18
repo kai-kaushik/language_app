@@ -4,3 +4,4 @@ __pycache__/
 pynecone.db
 reflex.db
 config.yaml
+.DS_Store
