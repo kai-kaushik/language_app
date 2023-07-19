@@ -1,7 +1,7 @@
 *.py[cod]
+.DS_Store
 .web
 __pycache__/
+config.yaml
 pynecone.db
 reflex.db
-config.yaml
-.DS_Store
