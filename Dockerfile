@@ -34,7 +34,6 @@ RUN apt-get update && apt-get install -y \
 
 ENV PATH="/app/venv/bin:$PATH"
 
-
 FROM runtime as init
 
 WORKDIR /app
