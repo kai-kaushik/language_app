@@ -35,6 +35,7 @@ ENV PATH="/app/venv/bin:$PATH"
 
 FROM runtime as init
 
+
 WORKDIR /app
 ENV BUN_INSTALL="/app/.bun"
 COPY --from=build /app/ /app/
