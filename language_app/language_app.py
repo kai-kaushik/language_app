@@ -4,16 +4,18 @@ from rxconfig import config
 import reflex as rx
 import openai
 import yaml
+import os
 
 docs_url = "https://reflex.dev/docs/getting-started/introduction"
 filename = f"{config.app_name}/{config.app_name}.py"
 
-with open("config.yaml", "r") as file:
-    params = yaml.load(file, Loader=yaml.FullLoader)
+# with open("config.yaml", "r") as file:
+#     params = yaml.load(file, Loader=yaml.FullLoader)
 
 
 # Set API key
-openai.api_key = params["OPENAI_API_KEY"]
+# openai.api_key = params["OPENAI_API_KEY"]
+openai.api_key = os.environ["OPENAI_KEY"]
 
 # ----------------------------------------------------------------------------
 # OpenAI API Logic

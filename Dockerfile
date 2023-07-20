@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y \
 RUN pip install wheel \
     && pip install -r requirements.txt
 
-
 FROM base as runtime
 
 RUN apt-get update && apt-get install -y \
