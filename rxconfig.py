@@ -5,11 +5,11 @@ class LanguageappConfig(rx.Config):
     pass
 
 # Get the value of the PORT environment variable, or use 8000 if it's not set
-port = os.environ.get('PORT', '8000')
+# port = os.environ.get('PORT', '8000')
 
 config = LanguageappConfig(
     app_name="language_app",
-    api_url=f"0.0.0.0:{port}",
+    api_url=f"0.0.0.0:8000",
     bun_path="/app/.bun/bin/bun",
     db_url="sqlite:///reflex.db",
 )
