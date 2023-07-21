@@ -5,3 +5,7 @@ __pycache__/
 config.yaml
 pynecone.db
 reflex.db
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
