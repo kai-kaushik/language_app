@@ -48,4 +48,4 @@ WORKDIR /app
 
 CMD ["reflex", "run" , "--env", "prod"]
 
-EXPOSE 80:8000
+EXPOSE 8000
