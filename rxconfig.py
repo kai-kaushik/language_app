@@ -5,7 +5,7 @@ class LanguageappConfig(rx.Config):
     pass
 
 # Get the value of the PORT environment variable, or use 8000 if it's not set
-port = os.environ.get('PORT', '3000')
+port = os.environ.get('PORT')
 
 config = LanguageappConfig(
     app_name="language_app",

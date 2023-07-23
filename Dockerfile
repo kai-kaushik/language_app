@@ -47,5 +47,3 @@ USER reflex
 WORKDIR /app
 
 CMD ["reflex", "run" , "--env", "prod"]
-
-EXPOSE 3000
