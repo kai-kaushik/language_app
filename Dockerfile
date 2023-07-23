@@ -18,8 +18,8 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install wheel \
-    && pip install -r requirements.txt
+RUN pip install wheel --default-timeout=100 \
+    && pip install -r requirements.txt --default-timeout=100
 
 FROM base as runtime
 
