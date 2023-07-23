@@ -1,11 +1,11 @@
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+# Elastic Beanstalk Files
 *.py[cod]
 .DS_Store
+.elasticbeanstalk/*
 .web
 __pycache__/
 config.yaml
 pynecone.db
 reflex.db
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml

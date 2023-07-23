@@ -2,11 +2,11 @@ FROM python:3.11-slim as base
 
 RUN adduser --disabled-password reflex
 
-
+ARG OPENAI_KEY
 FROM base as build
 
-WORKDIR /app
-ENV VIRTUAL_ENV=/app/venv
+WORKDIR /language_app
+ENV VIRTUAL_ENV=/language_app/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
@@ -31,22 +31,31 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-ENV PATH="/app/venv/bin:$PATH"
+RUN npm install -g n
+RUN n latest
+RUN npm install -g npm@latest
+RUN npm install -g yarn
+
+ENV PATH="/language_app/venv/bin:$PATH"
 
 FROM runtime as init
 
-WORKDIR /app
-ENV BUN_INSTALL="/app/.bun"
-COPY --from=build /app/ /app/
+WORKDIR /language_app
+ENV BUN_INSTALL="/language_app/.bun"
+COPY --from=build /language_app/ /language_app/
 RUN reflex init
+
+# RUN yarn install --update-checksums --cwd /language_app/.web
 
 FROM runtime
 
-COPY --chown=reflex --from=init /app/ /app/
+COPY --chown=reflex --from=init /language_app/ /language_app/
 USER reflex
-WORKDIR /app
+WORKDIR /language_app
 
-CMD ["reflex", "run" , "--env", "prod"]
+# RUN reflex export --no-zip
 
 EXPOSE 3000
 EXPOSE 8000
+
+CMD ["reflex", "run" , "--env", "prod"]
