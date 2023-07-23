@@ -101,6 +101,7 @@ def header():
             font_weight="bold",
             size="2xl",
             padding="0.2em",
+            padding_top="20vh"
         ),
         rx.text(
             "This is more than a Japanese-English Language Translator, Select you desired level of translation\
@@ -150,6 +151,7 @@ def submit_button():
     return rx.button(
         "Translate",
         on_click=State.translate,
+        color="white",
         border_radius="1em",
         box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
         background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
@@ -165,6 +167,7 @@ def kofi_popover():
         rx.popover_trigger(
             rx.button(
                 "Support Me",
+                color="white",
                 border_radius="8em",
                 box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
                 background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
@@ -198,7 +201,7 @@ def output():
         margin_top="1rem",
         border_radius="8px",
         padding="1em",
-        width = "60em",
+        width="60em",
         position="relative",
         box_shadow="rgba(169, 169, 169, 0.8) 0 10px 10px -10px",
     )
@@ -206,7 +209,7 @@ def output():
 
 def index() -> rx.component():
     """The main view."""
-    return rx.center(
+    return rx.vstack(
         rx.vstack(
             header(),
             rx.vstack(
@@ -240,6 +243,7 @@ def index() -> rx.component():
                     output(),
                 ),
             ),
+            rx.text("", height="10vh"),
             kofi_popover(),
             rx.button(
                 rx.icon(tag="moon"),
@@ -254,6 +258,7 @@ def index() -> rx.component():
         width="100%",
         height="100vh",
         background="radial-gradient(circle at 22% 11%,rgba(62, 180, 137,.20),hsla(0,0%,100%,0) 19%),radial-gradient(circle at 82% 25%,rgba(33,150,243,.18),hsla(0,0%,100%,0) 35%),radial-gradient(circle at 25% 61%,rgba(250, 128, 114, .28),hsla(0,0%,100%,0) 55%)",
+        overflow_y="auto",
     )
 
 
