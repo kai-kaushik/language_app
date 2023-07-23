@@ -15,7 +15,7 @@ import os
 # Fly / Docker
 config = rx.Config(
     app_name="language_app",
-    api_url="http://127.0.0.1:8000",
+    api_url="http://0.0.0.0:8000",
     bun_path="/language_app/.bun/bin/bun",
     db_url="sqlite:///reflex.db",
 )
