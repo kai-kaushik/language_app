@@ -55,7 +55,7 @@ WORKDIR /language_app
 
 # RUN reflex export --no-zip
 
-EXPOSE 3000
 EXPOSE 8000
+EXPOSE 3000
 
 CMD ["reflex", "run" , "--env", "prod"]
