@@ -45,7 +45,7 @@ ENV BUN_INSTALL="/language_app/.bun"
 COPY --from=build /language_app/ /language_app/
 RUN reflex init
 
-# RUN yarn install --update-checksums --cwd /language_app/.web
+RUN yarn install --update-checksums --cwd /language_app/.web
 
 FROM runtime
 
@@ -55,7 +55,7 @@ WORKDIR /language_app
 
 # RUN reflex export --no-zip
 
-EXPOSE 8000
 EXPOSE 3000
+EXPOSE 8000
 
 CMD ["reflex", "run" , "--env", "prod"]
