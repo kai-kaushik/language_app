@@ -45,7 +45,7 @@ ENV BUN_INSTALL="/language_app/.bun"
 COPY --from=build /language_app/ /language_app/
 RUN reflex init
 
-RUN yarn install --update-checksums --cwd /language_app/.web
+# RUN yarn install --update-checksums --cwd /language_app/.web
 
 FROM runtime
 
