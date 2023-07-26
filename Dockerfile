@@ -36,6 +36,15 @@ RUN n latest
 RUN npm install -g npm@latest
 RUN npm install -g yarn
 
+# Install Nginx
+RUN apt-get update && apt-get install -y nginx
+
+# Remove default nginx configuration
+RUN rm /etc/nginx/sites-enabled/default
+
+# Copy the Nginx configuration file
+COPY ./nginx.conf /etc/nginx/sites-enabled/
+
 ENV PATH="/language_app/venv/bin:$PATH"
 
 FROM runtime as init
@@ -50,7 +59,6 @@ RUN reflex init
 FROM runtime
 
 COPY --chown=reflex --from=init /language_app/ /language_app/
-USER reflex
 WORKDIR /language_app
 
 # RUN reflex export --no-zip
@@ -58,4 +66,4 @@ WORKDIR /language_app
 EXPOSE 3000
 EXPOSE 8000
 
-CMD ["reflex", "run" , "--env", "prod"]
+CMD /usr/sbin/nginx -g 'daemon off;' & su reflex -c 'reflex run --env prod'
