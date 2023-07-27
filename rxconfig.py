@@ -16,8 +16,9 @@ import reflex as rx
 config = rx.Config(
     app_name="language_app",
     api_url="http://127.0.0.1:8000",
-    bun_path="/language_app/.bun/bin/bun",
     db_url="sqlite:///reflex.db",
+    bun_path="/language_app/.bun/bin/bun",
+    env=rx.Env.PROD,
 )
 
 # nginx config
