@@ -94,21 +94,35 @@ class State(rx.State):
 def header():
     """Basic instructions to get started."""
     return rx.vstack(
-        rx.heading(
-            "Language Translator Assistant",
-            background_image="linear-gradient(271.68deg, #EE756A 0.75%, #756AEE 88.52%)",
-            background_clip="text",
-            font_weight="bold",
-            size="2xl",
-            padding="0.2em",
-            padding_top="20vh"
-        ),
+        rx.tablet_and_desktop(
+            rx.heading(
+                "Language Translator Assistant",
+                background_image="linear-gradient(271.68deg, #EE756A 0.75%, #756AEE 88.52%)",
+                background_clip="text",
+                font_weight="bold",
+                size="2xl",
+                padding="0.2em",
+                padding_top="20vh",
+                text_align="center"
+                )
+            ),
+        rx.mobile_only(
+            rx.heading(
+                "Language Translator Assistant",
+                background_image="linear-gradient(271.68deg, #EE756A 0.75%, #756AEE 88.52%)",
+                background_clip="text",
+                font_weight="bold",
+                size="xl",
+                padding="0.2em",
+                padding_top="10vh",
+                text_align="center"
+                )
+            ),
         rx.text(
-            "This is more than a Japanese-English Language Translator, Select you desired level of translation\
-                     profeciency and watch the magic happen!",
-            color = "#A9A9A9",
-            width="50em",
-            text_align="center"
+            "This is more than your average Language Translator!",
+            color="#A9A9A9",
+            text_align="center",
+            width=["90%", "50em"],
         ),
     )
 
@@ -119,7 +133,7 @@ def input_text(text="Text to translate", param=State.set_text):
         on_blur=param,
         border_color="#eaeaef",
         position="relative",
-        width = "60em",
+        width=["90%", "50em"],
         box_shadow="rgba(169, 169, 169, 0.8) 0 10px 10px -10px",
     )
 
@@ -155,7 +169,7 @@ def submit_button():
         border_radius="1em",
         box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
         background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
-        width="20%",
+        width="12em",
         _hover={
             "opacity": 0.85,
         },
@@ -181,8 +195,8 @@ def kofi_popover():
             )
         ),
         rx.popover_content(
-            rx.popover_close_button(),
-            rx.html(
+                rx.popover_close_button(),
+                rx.html(
                     """
                     <div style='position: relative; border-radius: 10px; overflow: hidden;left: 1em;'>
                         <iframe id='kofiframe' src='https://ko-fi.com/kai_3575/?hidefeed=true&widget=true&embed=true&preview=true' \
@@ -190,8 +204,39 @@ def kofi_popover():
                     </div>
                     """
                 ),
+            ),
+         )
+    
+def kofi_popover_mobile():
+    return rx.popover(
+        rx.popover_trigger(
+            rx.button(
+                "Support Me",
+                color="white",
+                border_radius="8em",
+                box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
+                background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
+                width="10em",
+                _hover={
+                    "opacity": 0.85,
+                },
+                position="fixed",
+                left="1em",
+                bottom="1em"
+            )
         ),
-    )
+        rx.popover_content(
+                rx.popover_close_button(),
+                rx.html(
+                    """
+                    <div style='position: relative; border-radius: 10px; overflow: hidden;left: 1em;'>
+                        <iframe id='kofiframe' src='https://ko-fi.com/kai_3575/?hidefeed=true&widget=true&embed=true&preview=true' \
+                            style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='500' title='kai_3575'></iframe>
+                    </div>
+                    """
+                ),
+            ),
+         )
 
 
 def output():
@@ -201,7 +246,7 @@ def output():
         margin_top="1rem",
         border_radius="8px",
         padding="1em",
-        width="60em",
+        width=["90%", "50em"],
         position="relative",
         box_shadow="rgba(169, 169, 169, 0.8) 0 10px 10px -10px",
     )
@@ -209,7 +254,7 @@ def output():
 
 def index() -> rx.component():
     """The main view."""
-    return rx.vstack(
+    return rx.responsive_grid(
         rx.vstack(
             header(),
             rx.vstack(
@@ -222,7 +267,7 @@ def index() -> rx.component():
                     ),
                     select_output_lang(),
                 ),
-                rx.hstack(
+                rx.wrap(
                     select_politeness(),
                 ),
             ),
@@ -244,7 +289,12 @@ def index() -> rx.component():
                 ),
             ),
             rx.text("", height="10vh"),
-            kofi_popover(),
+            rx.tablet_and_desktop(
+                kofi_popover()
+            ),
+            rx.mobile_only(
+                kofi_popover_mobile()
+            ),
             rx.button(
                 rx.icon(tag="moon"),
                 on_click=rx.toggle_color_mode,
@@ -255,6 +305,7 @@ def index() -> rx.component():
             border_radius="lg",
             spacing="1em",
         ),
+        columns=[1, 1, 1],
         width="100%",
         height="100vh",
         background="radial-gradient(circle at 22% 11%,rgba(62, 180, 137,.20),hsla(0,0%,100%,0) 19%),radial-gradient(circle at 82% 25%,rgba(33,150,243,.18),hsla(0,0%,100%,0) 35%),radial-gradient(circle at 25% 61%,rgba(250, 128, 114, .28),hsla(0,0%,100%,0) 55%)",
