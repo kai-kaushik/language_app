@@ -126,6 +126,7 @@ def header():
             color="#A9A9A9",
             text_align="center",
             width=["90%", "50em"],
+            as_="i",
         ),
     )
 
@@ -171,7 +172,7 @@ def submit_button():
         on_click=State.translate,
         color="white",
         border_radius="1em",
-        box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
+        box_shadow="#A9A9A9 0 15px 30px -10px",
         background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
         width="12em",
         _hover={
@@ -181,66 +182,17 @@ def submit_button():
 
 
 def kofi_popover():
-    return rx.popover(
-        rx.popover_trigger(
-            rx.button(
-                "Support Me",
-                color="white",
-                border_radius="8em",
-                box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
-                background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
-                width="10em",
-                _hover={
-                    "opacity": 0.85,
-                },
-                position="fixed",
-                left="1em",
-                bottom="1em",
-            )
-        ),
-        rx.popover_content(
-            rx.popover_close_button(),
-            rx.html(
-                """
-                    <div style='position: relative; border-radius: 10px; overflow: hidden;left: 1em;'>
-                        <iframe id='kofiframe' src='https://ko-fi.com/kai_3575/?hidefeed=true&widget=true&embed=true&preview=true' \
-                            style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='712' title='kai_3575'></iframe>
-                    </div>
-                    """
-            ),
-        ),
-    )
-
-
-def kofi_popover_mobile():
-    return rx.popover(
-        rx.popover_trigger(
-            rx.button(
-                "Support Me",
-                color="white",
-                border_radius="8em",
-                box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
-                background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
-                width="10em",
-                _hover={
-                    "opacity": 0.85,
-                },
-                position="fixed",
-                left="1em",
-                bottom="1em",
-            )
-        ),
-        rx.popover_content(
-            rx.popover_close_button(),
-            rx.html(
-                """
-                    <div style='position: relative; border-radius: 10px; overflow: hidden;left: 1em;'>
-                        <iframe id='kofiframe' src='https://ko-fi.com/kai_3575/?hidefeed=true&widget=true&embed=true&preview=true' \
-                            style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='500' title='kai_3575'></iframe>
-                    </div>
-                    """
-            ),
-        ),
+    return rx.html(
+        """<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+            <script>
+            kofiWidgetOverlay.draw('kai_3575', {
+                'type': 'floating-chat',
+                'floating-chat.donateButton.text': 'Support me',
+                'floating-chat.donateButton.background-color': '#d9534f',
+                'floating-chat.donateButton.text-color': '#fff'
+            });
+            </script>
+        """
     )
 
 
@@ -293,9 +245,16 @@ def index() -> rx.component():
                     output(),
                 ),
             ),
+            rx.text(
+                "Made with ❤️ by Kai Kaushik",
+                color="#A9A9A9",
+                font_size="0.8em",
+                text_align="center",
+                width=["90%", "50em"],
+                as_="i",
+            ),
             rx.text("", height="10vh"),
-            rx.tablet_and_desktop(kofi_popover()),
-            rx.mobile_only(kofi_popover_mobile()),
+            kofi_popover(),
             rx.button(
                 rx.icon(tag="moon"),
                 on_click=rx.toggle_color_mode,
@@ -316,5 +275,5 @@ def index() -> rx.component():
 
 # Add state and page to the app.
 app = rx.App(state=State)
-app.add_page(index, title="Translator")
+app.add_page(index, title="Language Translator")
 app.compile()
