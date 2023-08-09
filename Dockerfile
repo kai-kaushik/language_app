@@ -43,7 +43,7 @@ RUN apt-get update && apt-get install -y nginx
 RUN rm /etc/nginx/sites-enabled/default
 
 # Copy the Nginx configuration file
-COPY ./nginx.conf /etc/nginx/sites-enabled/
+COPY ./nginx.conf /etc/nginx/conf.d/
 
 ENV PATH="/language_app/venv/bin:$PATH"
 
@@ -62,8 +62,6 @@ COPY --chown=reflex --from=init /language_app/ /language_app/
 WORKDIR /language_app
 
 # RUN reflex export --no-zip
-
-EXPOSE 3000
 EXPOSE 8000
 
-CMD /usr/sbin/nginx -g 'daemon off;' & su reflex -c 'reflex run --env prod'
+CMD /usr/sbin/nginx -g 'daemon off;' & su reflex -c 'reflex run'

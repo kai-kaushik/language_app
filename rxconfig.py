@@ -15,7 +15,7 @@ import reflex as rx
 # Fly / Docker
 config = rx.Config(
     app_name="language_app",
-    api_url="http://44.224.95.168",
+    api_url="https://lingooo.app",
     env=rx.Env.PROD,
 )
 
