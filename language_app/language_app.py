@@ -30,7 +30,7 @@ class State(rx.State):
     ]
     polite_level: str = "Workplace Casual"
     prompt: str = ""
-    lang_list: list = ["English", "Japanese"]
+    lang_list: list = ["English", "Japanese", "French"]
     input_lang: str = "English"
     output_lang: str = "Japanese"
     out_processing: bool = False
@@ -63,27 +63,30 @@ class State(rx.State):
 
     def _construct_prompt(self):
         if self.output_lang == "Japanese":
-            self.prompt = f"You are a helpful Japanese Translator. Please Translate the sentence '{self.text}' from the {self.input_lang} to {self.polite_level} Japanese and provide \
-                            me with the word definitions of all the Japanese words used which are N4 proficiency level and above. The output should \
-                            very stricly be in the following format:\
+            self.prompt = f"""You are a helpful Japanese Translator. Please Translate the sentence '{self.text}' \
+                            from the {self.input_lang} to {self.polite_level} Japanese and provide \
+                            me with the word definitions of all the Japanese words used which are N4 proficiency \
+                            level and above. The output should very stricly be in the following format:\
                             'Translated Sentence in {self.polite_level} Japanese: <Translated Sentence in Kanji>\
                             Translated Sentence In Romanji: <Translated sentnece in Romanji'\
                             Give the {self.input_lang} definitions for hard Japanese words used and the output should \
                             very stricly be in the following format:\
                             'The {self.input_lang} definitions for hard Japanese words used:\
                             Japanese Word in Kanji (Written in Romanji): {self.input_lang} Definition.'\
-                            {self.text_opt}."
-
-        elif self.output_lang == "English":
-            self.prompt = f"You are a helpful English Translator. Please Translate the sentence '{self.text}' from the {self.input_lang} to {self.polite_level} English and provide \
-                            me with the word definitions of all the hard English words used. The output should \
+                            {self.text_opt}."""
+                            
+        elif self.output_lang == "French" or self.output_lang == "English":
+            self.prompt = f"""You are a helpful {self.output_lang} Translator. Please Translate the sentence '{self.text}' \
+                            from the {self.input_lang} to {self.polite_level} {self.output_lang} and provide \
+                            me with the word definitions of all the hard {self.output_lang} words used. The output should \
                             very strictly be in the following format:\
-                            'Translated Sentence in {self.polite_level} English: <Translated Sentence in English>'\
-                            Give the {self.input_lang} definitions for hard English words used and the output should \
+                            'Translated Sentence in {self.polite_level} {self.output_lang}: <Translated Sentence in \
+                            {self.output_lang}>'
+                            Give the {self.input_lang} definitions for hard {self.output_lang} words used and the output should \
                             very stricly be in the following format:\
-                            '{self.input_lang} definitions for all the hard English words used:\
-                            English Word: {self.input_lang} Definition.'\
-                            {self.text_opt}."
+                            '{self.input_lang} definitions for all the hard {self.output_lang} words used:\
+                            {self.output_lang} Word: {self.input_lang} Definition.'\
+                            {self.text_opt}."""
 
 
 # ----------------------------------------------------------------------------
