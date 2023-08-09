@@ -59,7 +59,7 @@ class State(rx.State):
         response = openai.ChatCompletion.create(
             model=model, messages=[{"role": "user", "content": self.prompt}]
         )
-        return response["choices"][0]["message"]["content"].replace('\n', '<br/>')
+        return response["choices"][0]["message"]["content"].replace("\n", "<br/>")
 
     def _construct_prompt(self):
         if self.output_lang == "Japanese":
@@ -74,7 +74,7 @@ class State(rx.State):
                             'The {self.input_lang} definitions for hard Japanese words used:\
                             Japanese Word in Kanji (Written in Romanji): {self.input_lang} Definition.'\
                             {self.text_opt}."""
-                            
+
         elif self.output_lang == "French" or self.output_lang == "English":
             self.prompt = f"""You are a helpful {self.output_lang} Translator. Please Translate the sentence '{self.text}' \
                             from the {self.input_lang} to {self.polite_level} {self.output_lang} and provide \
@@ -106,9 +106,9 @@ def header():
                 size="2xl",
                 padding="0.2em",
                 padding_top="20vh",
-                text_align="center"
-                )
-            ),
+                text_align="center",
+            )
+        ),
         rx.mobile_only(
             rx.heading(
                 "Language Translator Assistant",
@@ -118,9 +118,9 @@ def header():
                 size="xl",
                 padding="0.2em",
                 padding_top="10vh",
-                text_align="center"
-                )
-            ),
+                text_align="center",
+            )
+        ),
         rx.text(
             "This is more than your average Language Translator!",
             color="#A9A9A9",
@@ -139,6 +139,7 @@ def input_text(text="Text to translate", param=State.set_text):
         width=["90%", "50em"],
         box_shadow="rgba(169, 169, 169, 0.8) 0 10px 10px -10px",
     )
+
 
 def select_politeness():
     return rx.select(
@@ -194,22 +195,23 @@ def kofi_popover():
                 },
                 position="fixed",
                 left="1em",
-                bottom="1em"
+                bottom="1em",
             )
         ),
         rx.popover_content(
-                rx.popover_close_button(),
-                rx.html(
-                    """
+            rx.popover_close_button(),
+            rx.html(
+                """
                     <div style='position: relative; border-radius: 10px; overflow: hidden;left: 1em;'>
                         <iframe id='kofiframe' src='https://ko-fi.com/kai_3575/?hidefeed=true&widget=true&embed=true&preview=true' \
                             style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='712' title='kai_3575'></iframe>
                     </div>
                     """
-                ),
             ),
-         )
-    
+        ),
+    )
+
+
 def kofi_popover_mobile():
     return rx.popover(
         rx.popover_trigger(
@@ -225,21 +227,21 @@ def kofi_popover_mobile():
                 },
                 position="fixed",
                 left="1em",
-                bottom="1em"
+                bottom="1em",
             )
         ),
         rx.popover_content(
-                rx.popover_close_button(),
-                rx.html(
-                    """
+            rx.popover_close_button(),
+            rx.html(
+                """
                     <div style='position: relative; border-radius: 10px; overflow: hidden;left: 1em;'>
                         <iframe id='kofiframe' src='https://ko-fi.com/kai_3575/?hidefeed=true&widget=true&embed=true&preview=true' \
                             style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='500' title='kai_3575'></iframe>
                     </div>
                     """
-                ),
             ),
-         )
+        ),
+    )
 
 
 def output():
@@ -292,18 +294,14 @@ def index() -> rx.component():
                 ),
             ),
             rx.text("", height="10vh"),
-            rx.tablet_and_desktop(
-                kofi_popover()
-            ),
-            rx.mobile_only(
-                kofi_popover_mobile()
-            ),
+            rx.tablet_and_desktop(kofi_popover()),
+            rx.mobile_only(kofi_popover_mobile()),
             rx.button(
                 rx.icon(tag="moon"),
                 on_click=rx.toggle_color_mode,
                 position="fixed",
                 right="1em",
-                bottom="1em"
+                bottom="1em",
             ),
             border_radius="lg",
             spacing="1em",
