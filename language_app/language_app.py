@@ -125,7 +125,7 @@ def header():
             "This is more than your average Language Translator!",
             color="#A9A9A9",
             text_align="center",
-            width=["90%", "50em"],
+            width=["90%", "90%", "50em"],
             as_="i",
         ),
     )
@@ -137,7 +137,7 @@ def input_text(text="Text to translate", param=State.set_text):
         on_blur=param,
         border_color="#eaeaef",
         position="relative",
-        width=["90%", "50em"],
+        width=["90%", "90%", "50em"],
         box_shadow="rgba(169, 169, 169, 0.8) 0 10px 10px -10px",
     )
 
@@ -250,7 +250,7 @@ def index() -> rx.component():
                 color="#A9A9A9",
                 font_size="0.8em",
                 text_align="center",
-                width=["90%", "50em"],
+                width=["90%", "90%", "50em"],
                 as_="i",
             ),
             rx.text("", height="10vh"),

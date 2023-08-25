@@ -1,6 +1,7 @@
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 # Elastic Beanstalk Files
+*.db
 *.py[cod]
 .DS_Store
 .elasticbeanstalk/*
