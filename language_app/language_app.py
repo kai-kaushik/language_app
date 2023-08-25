@@ -30,7 +30,7 @@ class State(rx.State):
     ]
     polite_level: str = "Workplace Casual"
     prompt: str = ""
-    lang_list: list = ["English", "Japanese", "French"]
+    lang_list: list = ["English", "Japanese", "French", "Hindi", "Mandarin Chinese"]
     input_lang: str = "English"
     output_lang: str = "Japanese"
     out_processing: bool = False
@@ -62,7 +62,7 @@ class State(rx.State):
         return response["choices"][0]["message"]["content"].replace("\n", "<br/>")
 
     def _construct_prompt(self):
-        if self.output_lang == "Japanese":
+        if self.output_lang in ["Japanese", "Mandarin Chinese", "Hindi"]:
             self.prompt = f"""You are a helpful Japanese Translator. Please Translate the sentence '{self.text}' \
                             from the {self.input_lang} to {self.polite_level} Japanese and provide \
                             me with the word definitions of all the Japanese words used which are N4 proficiency \
@@ -153,7 +153,7 @@ def select_politeness():
 def select_input_lang():
     return rx.select(
         State.lang_list,
-        placeholder="English",
+        placeholder="Input",
         on_change=State.set_input_lang,
     )
 
@@ -161,7 +161,7 @@ def select_input_lang():
 def select_output_lang():
     return rx.select(
         State.lang_list,
-        placeholder="Japanese",
+        placeholder="Output",
         on_change=State.set_output_lang,
     )
 
@@ -203,7 +203,7 @@ def output():
         margin_top="1rem",
         border_radius="8px",
         padding="1em",
-        width=["90%", "50em"],
+        width=["90%", "90%", "50em"],
         position="relative",
         box_shadow="rgba(169, 169, 169, 0.8) 0 10px 10px -10px",
     )
