@@ -80,7 +80,7 @@ class State(rx.State):
                             from the {self.input_lang} to {self.polite_level} {self.output_lang} and provide \
                             me with the word definitions of all the hard {self.output_lang} words used. The output should very stricly be in the following format:\
                             'Translated Sentence in {self.polite_level} {self.output_lang}: <Translated Sentence in {self.output_lang}>\
-                            Translated Sentence In {self.input_lang} charecters: <Translated sentnece in {self.input_lang} charecters'\
+                            Translated Sentence In {self.input_lang} charecters: <Translated sentence written with {self.input_lang} charecters'\
                             Give the {self.input_lang} definitions for hard {self.output_lang} words used and the output should \
                             very stricly be in the following format:\
                             '{self.input_lang} definitions for all the hard {self.output_lang} words used:\
