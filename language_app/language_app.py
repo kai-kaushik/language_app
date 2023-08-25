@@ -62,7 +62,7 @@ class State(rx.State):
         return response["choices"][0]["message"]["content"].replace("\n", "<br/>")
 
     def _construct_prompt(self):
-        if self.output_lang in ["Japanese", "Mandarin Chinese", "Hindi"]:
+        if self.output_lang == "Japanese":
             self.prompt = f"""You are a helpful Japanese Translator. Please Translate the sentence '{self.text}' \
                             from the {self.input_lang} to {self.polite_level} Japanese and provide \
                             me with the word definitions of all the Japanese words used which are N4 proficiency \
@@ -73,6 +73,18 @@ class State(rx.State):
                             very stricly be in the following format:\
                             'The {self.input_lang} definitions for hard Japanese words used:\
                             Japanese Word in Kanji (Written in Romanji): {self.input_lang} Definition.'\
+                            {self.text_opt}."""
+        
+        if self.output_lang in ["Mandarin Chinese", "Hindi"]:
+            self.prompt = f"""You are a helpful {self.output_lang} Translator. Please Translate the sentence '{self.text}' \
+                            from the {self.input_lang} to {self.polite_level} {self.output_lang} and provide \
+                            me with the word definitions of all the hard {self.output_lang} words used. The output should very stricly be in the following format:\
+                            'Translated Sentence in {self.polite_level} {self.output_lang}: <Translated Sentence in {self.output_lang}>\
+                            Translated Sentence In {self.input_lang} charecters: <Translated sentnece in {self.input_lang} charecters'\
+                            Give the {self.input_lang} definitions for hard {self.output_lang} words used and the output should \
+                            very stricly be in the following format:\
+                            '{self.input_lang} definitions for all the hard {self.output_lang} words used:\
+                            {self.output_lang} Word: {self.input_lang} Definition.'\
                             {self.text_opt}."""
 
         elif self.output_lang == "French" or self.output_lang == "English":
