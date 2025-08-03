@@ -1,2 +1,2 @@
-reflex==0.5.10
-openai==1.51.2
+reflex>=0.8.4
+openai>=1.51.0

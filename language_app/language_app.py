@@ -162,13 +162,7 @@ def input_text(text="Text to translate", param=State.set_text):
 
 def select_politeness():
     return rx.select(
-        items=[
-            "Super Casual",
-            "Moderate Casual", 
-            "Workplace Casual",
-            "Workplace Polite",
-            "Super Polite",
-        ],
+        State.politeness,
         placeholder="Select level of politeness",
         on_change=State.set_polite_level,
     )
@@ -176,7 +170,7 @@ def select_politeness():
 
 def select_input_lang():
     return rx.select(
-        items=["English", "Japanese", "French", "Hindi", "Mandarin Chinese"],
+        State.lang_list,
         placeholder="Input",
         on_change=State.set_input_lang,
     )
@@ -184,7 +178,7 @@ def select_input_lang():
 
 def select_output_lang():
     return rx.select(
-        items=["English", "Japanese", "French", "Hindi", "Mandarin Chinese"],
+        State.lang_list,
         placeholder="Output",
         on_change=State.set_output_lang,
     )
@@ -235,7 +229,7 @@ def output():
 
 def index() -> rx.Component:
     """The main view."""
-    return rx.box(
+    return rx.responsive_grid(
         rx.vstack(
             header(),
             rx.vstack(
@@ -248,7 +242,9 @@ def index() -> rx.Component:
                     ),
                     select_output_lang(),
                 ),
-                select_politeness(),
+                rx.wrap(
+                    select_politeness(),
+                ),
             ),
             input_text(),
             input_text(text="Optional instructions.", param=State.set_text_opt),
@@ -287,6 +283,7 @@ def index() -> rx.Component:
             border_radius="lg",
             spacing="1em",
         ),
+        columns=[1, 1, 1],
         width="100%",
         height="100vh",
         background="radial-gradient(circle at 22% 11%,rgba(62, 180, 137,.20),hsla(0,0%,100%,0) 19%),radial-gradient(circle at 82% 25%,rgba(33,150,243,.18),hsla(0,0%,100%,0) 35%),radial-gradient(circle at 25% 61%,rgba(250, 128, 114, .28),hsla(0,0%,100%,0) 55%)",
