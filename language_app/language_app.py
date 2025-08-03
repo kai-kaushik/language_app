@@ -9,9 +9,18 @@ docs_url = "https://reflex.dev/docs/getting-started/introduction"
 filename = f"{config.app_name}/{config.app_name}.py"
 
 try:
-    client = OpenAI(api_key=os.environ["OPENAI_KEY"])
-except KeyError:
-    print("Warning: OPENAI_KEY environment variable not set")
+    api_key = os.environ.get("OPENAI_KEY")
+    if not api_key:
+        print("Warning: OPENAI_KEY environment variable not set")
+        client = None
+    elif api_key == "test_key":
+        print("Warning: Using test API key - will not work in production")
+        client = None
+    else:
+        client = OpenAI(api_key=api_key)
+        print("✅ OpenAI client initialized successfully")
+except Exception as e:
+    print(f"Error initializing OpenAI client: {e}")
     client = None
 
 # ----------------------------------------------------------------------------
@@ -318,7 +327,6 @@ def index() -> rx.Component:
                     as_="i",
                 ),
                 rx.text("", height="10vh"),
-                kofi_popover(),
                 rx.button(
                     rx.icon(tag="moon"),
                     on_click=rx.toggle_color_mode,
