@@ -1,0 +1,16 @@
+:{$PORT}
+
+handle /_event/* {
+	reverse_proxy localhost:8000
+}
+
+handle /backend/* {
+	reverse_proxy localhost:8000
+}
+
+handle {
+	try_files {path} /index.html
+	file_server {
+		root .web/_static
+	}
+}

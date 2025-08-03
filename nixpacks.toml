@@ -1,11 +1,10 @@
 [variables]
 NIXPACKS_PYTHON_VERSION = "3.11"
-PORT = "8000"
 
 [phases.setup]
-nixPkgs = ["python311", "nodejs-18_x", "unzip", "curl"]
+nixPkgs = ["python311", "nodejs-18_x", "unzip", "curl", "caddy"]
 
-[phases.install]
+[phases.install] 
 cmds = [
     "python -m venv /opt/venv",
     ". /opt/venv/bin/activate && pip install -r requirements.txt"
@@ -13,8 +12,9 @@ cmds = [
 
 [phases.build]
 cmds = [
-    ". /opt/venv/bin/activate && reflex init"
+    ". /opt/venv/bin/activate && reflex init",
+    ". /opt/venv/bin/activate && reflex export --frontend-only"
 ]
 
 [start]
-cmd = ". /opt/venv/bin/activate && reflex run --env prod --backend-host 0.0.0.0 --backend-port $PORT"
+cmd = ". /opt/venv/bin/activate && reflex run --env prod --backend-only --backend-host 0.0.0.0 --backend-port 8000 & caddy run --config ./Caddyfile"
