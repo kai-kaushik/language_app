@@ -5,4 +5,5 @@ import os
 config = rx.Config(
     app_name="language_app",
     env=rx.Env.PROD,
+    disable_plugins=["reflex.plugins.sitemap.SitemapPlugin"],
 )

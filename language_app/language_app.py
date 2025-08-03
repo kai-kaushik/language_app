@@ -229,61 +229,66 @@ def output():
 
 def index() -> rx.Component:
     """The main view."""
-    return rx.responsive_grid(
-        rx.vstack(
-            header(),
+    return rx.container(
+        rx.center(
             rx.vstack(
-                rx.hstack(
-                    select_input_lang(),
-                    rx.image(
-                        src="arrow.svg",
-                        height="3em",
-                        width="3em",
-                    ),
-                    select_output_lang(),
-                ),
-                rx.wrap(
-                    select_politeness(),
-                ),
-            ),
-            input_text(),
-            input_text(text="Optional instructions.", param=State.set_text_opt),
-            submit_button(),
-            rx.cond(
-                State.out_processing,
+                header(),
                 rx.vstack(
-                    rx.progress(is_indeterminate=True, width="100%"),
-                    rx.progress(is_indeterminate=True, width="100%"),
-                    rx.progress(is_indeterminate=True, width="100%"),
-                    spacing="1em",
-                    min_width=["10em", "20em"],
+                    rx.hstack(
+                        select_input_lang(),
+                        rx.image(
+                            src="arrow.svg",
+                            height="3em",
+                            width="3em",
+                        ),
+                        select_output_lang(),
+                    ),
+                    rx.wrap(
+                        select_politeness(),
+                    ),
                 ),
+                input_text(),
+                input_text(text="Optional instructions.", param=State.set_text_opt),
+                submit_button(),
                 rx.cond(
-                    State.out_done,
-                    output(),
+                    State.out_processing,
+                    rx.vstack(
+                        rx.progress(is_indeterminate=True, width="100%"),
+                        rx.progress(is_indeterminate=True, width="100%"),
+                        rx.progress(is_indeterminate=True, width="100%"),
+                        spacing="1em",
+                        min_width=["10em", "20em"],
+                    ),
+                    rx.cond(
+                        State.out_done,
+                        output(),
+                    ),
                 ),
+                rx.text(
+                    "Made with ❤️ by Kai Kaushik",
+                    color="#A9A9A9",
+                    font_size="0.8em",
+                    text_align="center",
+                    width=["90%", "90%", "50em"],
+                    as_="i",
+                ),
+                rx.text("", height="10vh"),
+                kofi_popover(),
+                rx.button(
+                    rx.icon(tag="moon"),
+                    on_click=rx.toggle_color_mode,
+                    position="fixed",
+                    right="1em",
+                    bottom="1em",
+                ),
+                border_radius="lg",
+                spacing="1em",
+                align="center",
+                max_width="800px",
             ),
-            rx.text(
-                "Made with ❤️ by Kai Kaushik",
-                color="#A9A9A9",
-                font_size="0.8em",
-                text_align="center",
-                width=["90%", "90%", "50em"],
-                as_="i",
-            ),
-            rx.text("", height="10vh"),
-            kofi_popover(),
-            rx.button(
-                rx.icon(tag="moon"),
-                on_click=rx.toggle_color_mode,
-                position="fixed",
-                right="1em",
-                bottom="1em",
-            ),
-            border_radius="lg",
-            spacing="1em",
+            width="100%",
+            min_height="100vh",
         ),
-        columns=[1, 1, 1],
         width="100%",
         height="100vh",
         background="radial-gradient(circle at 22% 11%,rgba(62, 180, 137,.20),hsla(0,0%,100%,0) 19%),radial-gradient(circle at 82% 25%,rgba(33,150,243,.18),hsla(0,0%,100%,0) 35%),radial-gradient(circle at 25% 61%,rgba(250, 128, 114, .28),hsla(0,0%,100%,0) 55%)",
