@@ -46,10 +46,6 @@ Visit `http://localhost:3000`
 
 ## Deploy to Railway
 
-### Option 1: One-Click Deploy
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/A5TaaV)
-
-### Option 2: Manual Deploy
 1. Connect your GitHub repo to Railway
 2. Set environment variable: `OPENAI_KEY=your-api-key`
 3. Deploy!
