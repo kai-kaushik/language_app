@@ -2,13 +2,13 @@
 from rxconfig import config
 
 import reflex as rx
-import openai
+from openai import OpenAI
 import os
 
 docs_url = "https://reflex.dev/docs/getting-started/introduction"
 filename = f"{config.app_name}/{config.app_name}.py"
 
-openai.api_key = os.environ["OPENAI_KEY"]
+client = OpenAI(api_key=os.environ["OPENAI_KEY"])
 
 # ----------------------------------------------------------------------------
 # OpenAI API Logic
@@ -56,10 +56,10 @@ class State(rx.State):
 
     def get_openai_response(self, model="gpt-3.5-turbo") -> str:
         self._construct_prompt()
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=model, messages=[{"role": "user", "content": self.prompt}]
         )
-        return response["choices"][0]["message"]["content"].replace("\n", "<br/>")
+        return response.choices[0].message.content.replace("\n", "<br/>")
 
     def _construct_prompt(self):
         if self.output_lang == "Japanese":
