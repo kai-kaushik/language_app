@@ -221,7 +221,7 @@ def output():
     )
 
 
-def index() -> rx.component():
+def index() -> rx.Component:
     """The main view."""
     return rx.responsive_grid(
         rx.vstack(
