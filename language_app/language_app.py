@@ -8,7 +8,11 @@ import os
 docs_url = "https://reflex.dev/docs/getting-started/introduction"
 filename = f"{config.app_name}/{config.app_name}.py"
 
-client = OpenAI(api_key=os.environ["OPENAI_KEY"])
+try:
+    client = OpenAI(api_key=os.environ["OPENAI_KEY"])
+except KeyError:
+    print("Warning: OPENAI_KEY environment variable not set")
+    client = None
 
 # ----------------------------------------------------------------------------
 # OpenAI API Logic
@@ -55,6 +59,8 @@ class State(rx.State):
                 yield rx.window_alert("Error with OpenAI Execution.")
 
     def get_openai_response(self, model="gpt-3.5-turbo") -> str:
+        if client is None:
+            raise Exception("OpenAI client not initialized. Please set OPENAI_KEY environment variable.")
         self._construct_prompt()
         response = client.chat.completions.create(
             model=model, messages=[{"role": "user", "content": self.prompt}]
@@ -156,7 +162,13 @@ def input_text(text="Text to translate", param=State.set_text):
 
 def select_politeness():
     return rx.select(
-        State.politeness,
+        items=[
+            "Super Casual",
+            "Moderate Casual", 
+            "Workplace Casual",
+            "Workplace Polite",
+            "Super Polite",
+        ],
         placeholder="Select level of politeness",
         on_change=State.set_polite_level,
     )
@@ -164,7 +176,7 @@ def select_politeness():
 
 def select_input_lang():
     return rx.select(
-        State.lang_list,
+        items=["English", "Japanese", "French", "Hindi", "Mandarin Chinese"],
         placeholder="Input",
         on_change=State.set_input_lang,
     )
@@ -172,7 +184,7 @@ def select_input_lang():
 
 def select_output_lang():
     return rx.select(
-        State.lang_list,
+        items=["English", "Japanese", "French", "Hindi", "Mandarin Chinese"],
         placeholder="Output",
         on_change=State.set_output_lang,
     )
@@ -223,7 +235,7 @@ def output():
 
 def index() -> rx.Component:
     """The main view."""
-    return rx.responsive_grid(
+    return rx.box(
         rx.vstack(
             header(),
             rx.vstack(
@@ -236,9 +248,7 @@ def index() -> rx.Component:
                     ),
                     select_output_lang(),
                 ),
-                rx.wrap(
-                    select_politeness(),
-                ),
+                select_politeness(),
             ),
             input_text(),
             input_text(text="Optional instructions.", param=State.set_text_opt),
@@ -277,7 +287,6 @@ def index() -> rx.Component:
             border_radius="lg",
             spacing="1em",
         ),
-        columns=[1, 1, 1],
         width="100%",
         height="100vh",
         background="radial-gradient(circle at 22% 11%,rgba(62, 180, 137,.20),hsla(0,0%,100%,0) 19%),radial-gradient(circle at 82% 25%,rgba(33,150,243,.18),hsla(0,0%,100%,0) 35%),radial-gradient(circle at 25% 61%,rgba(250, 128, 114, .28),hsla(0,0%,100%,0) 55%)",
@@ -286,6 +295,5 @@ def index() -> rx.Component:
 
 
 # Add state and page to the app.
-app = rx.App(state=State)
+app = rx.App()
 app.add_page(index, title="Language Translator")
-app.compile()
