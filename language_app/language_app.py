@@ -54,18 +54,32 @@ class State(rx.State):
                 self.out_done = True
                 self.out_processing = False
                 yield
-            except:
+            except Exception as e:
                 self.out_processing = False
-                yield rx.window_alert("Error with OpenAI Execution.")
+                error_message = str(e) if str(e) else "Unexpected error occurred"
+                yield rx.window_alert(f"Translation Error: {error_message}")
 
     def get_openai_response(self, model="gpt-3.5-turbo") -> str:
         if client is None:
-            raise Exception("OpenAI client not initialized. Please set OPENAI_KEY environment variable.")
+            raise Exception("OpenAI API key not configured. Please check your environment variables.")
+        
         self._construct_prompt()
-        response = client.chat.completions.create(
-            model=model, messages=[{"role": "user", "content": self.prompt}]
-        )
-        return response.choices[0].message.content.replace("\n", "<br/>")
+        
+        try:
+            response = client.chat.completions.create(
+                model=model, 
+                messages=[{"role": "user", "content": self.prompt}],
+                timeout=30  # 30 second timeout
+            )
+            return response.choices[0].message.content.replace("\n", "<br/>")
+        except Exception as e:
+            error_msg = str(e)
+            if "timeout" in error_msg.lower():
+                raise Exception("Request timed out. Please try again or check your internet connection.")
+            elif "api" in error_msg.lower():
+                raise Exception("OpenAI API error. Please check your API key and try again.")
+            else:
+                raise Exception(f"Error connecting to translation service: {error_msg}")
 
     def _construct_prompt(self):
         if self.output_lang == "Japanese":
@@ -218,6 +232,16 @@ def kofi_popover():
                 'floating-chat.donateButton.text-color': '#fff'
             });
             </script>
+            <style>
+            iframe[src*="ko-fi"] {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            .floatingchat-container-wrap {
+                background: transparent !important;
+            }
+            </style>
         """
     )
 
@@ -299,8 +323,9 @@ def index() -> rx.Component:
                     rx.icon(tag="moon"),
                     on_click=rx.toggle_color_mode,
                     position="fixed",
+                    top="1em",
                     right="1em",
-                    bottom="1em",
+                    z_index="999",
                 ),
                 border_radius="lg",
                 spacing="4",
