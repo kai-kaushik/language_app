@@ -16,4 +16,4 @@ cmds = [
 ]
 
 [start]
-cmd = ". /opt/venv/bin/activate && reflex run --env prod --backend-host 0.0.0.0 --backend-port 8000 --frontend-host 0.0.0.0 --frontend-port 3000"
+cmd = ". /opt/venv/bin/activate && reflex run --env prod"
