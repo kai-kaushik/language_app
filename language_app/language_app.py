@@ -118,25 +118,33 @@ def header():
         rx.tablet_and_desktop(
             rx.heading(
                 "Language Translator Assistant",
-                background_image="linear-gradient(271.68deg, #EE756A 0.75%, #756AEE 88.52%)",
-                background_clip="text",
-                font_weight="bold",
                 size="9",
                 padding="0.2em",
                 padding_top="20vh",
                 text_align="center",
+                style={
+                    "background_image": "linear-gradient(271.68deg, #EE756A 0.75%, #756AEE 88.52%)",
+                    "background_clip": "text",
+                    "-webkit-background-clip": "text",
+                    "-webkit-text-fill-color": "transparent",
+                    "font_weight": "bold",
+                }
             )
         ),
         rx.mobile_only(
             rx.heading(
                 "Language Translator Assistant",
-                background_image="linear-gradient(271.68deg, #EE756A 0.75%, #756AEE 88.52%)",
-                background_clip="text",
-                font_weight="bold",
                 size="8",
                 padding="0.2em",
                 padding_top="10vh",
                 text_align="center",
+                style={
+                    "background_image": "linear-gradient(271.68deg, #EE756A 0.75%, #756AEE 88.52%)",
+                    "background_clip": "text",
+                    "-webkit-background-clip": "text",
+                    "-webkit-text-fill-color": "transparent",
+                    "font_weight": "bold",
+                }
             )
         ),
         rx.text(
@@ -234,7 +242,7 @@ def index() -> rx.Component:
             rx.vstack(
                 header(),
                 rx.vstack(
-                    rx.hstack(
+                    rx.flex(
                         select_input_lang(),
                         rx.image(
                             src="arrow.svg",
@@ -242,10 +250,22 @@ def index() -> rx.Component:
                             width="3em",
                         ),
                         select_output_lang(),
+                        direction=["column", "column", "row"],
+                        align="center",
+                        justify="center",
+                        spacing="4",
+                        flex_wrap="wrap",
                     ),
-                    rx.wrap(
+                    rx.flex(
                         select_politeness(),
+                        justify="center",
+                        align="center",
+                        width="100%",
+                        padding_top="1rem",
                     ),
+                    spacing="5",
+                    align="center",
+                    width="100%",
                 ),
                 input_text(),
                 input_text(text="Optional instructions.", param=State.set_text_opt),
@@ -256,7 +276,7 @@ def index() -> rx.Component:
                         rx.progress(is_indeterminate=True, width="100%"),
                         rx.progress(is_indeterminate=True, width="100%"),
                         rx.progress(is_indeterminate=True, width="100%"),
-                        spacing="1em",
+                        spacing="4",
                         min_width=["10em", "20em"],
                     ),
                     rx.cond(
@@ -282,7 +302,7 @@ def index() -> rx.Component:
                     bottom="1em",
                 ),
                 border_radius="lg",
-                spacing="1em",
+                spacing="4",
                 align="center",
                 max_width="800px",
             ),
