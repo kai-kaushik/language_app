@@ -1,5 +1,6 @@
 [variables]
 NIXPACKS_PYTHON_VERSION = "3.11"
+PORT = "8000"
 
 [phases.setup]
 nixPkgs = ["python311", "nodejs-18_x", "unzip", "curl"]
@@ -16,4 +17,4 @@ cmds = [
 ]
 
 [start]
-cmd = ". /opt/venv/bin/activate && reflex run --env prod"
+cmd = ". /opt/venv/bin/activate && reflex run --env prod --backend-host 0.0.0.0 --backend-port $PORT"
